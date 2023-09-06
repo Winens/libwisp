@@ -2,7 +2,12 @@ package x3dh
 
 import (
 	"crypto/rand"
+	"errors"
 	"golang.org/x/crypto/curve25519"
+)
+
+var (
+	ErrInvalidKey = errors.New("invalid-key")
 )
 
 // Key X25519 with extra methods
@@ -20,4 +25,17 @@ func GenerateKey() (*Key, error) {
 
 	curve25519.ScalarBaseMult(&k.Public, &k.Private)
 	return &k, nil
+}
+
+func (k *Key) Exchange(other *Key) ([]byte, error) {
+	if other == nil || k == nil {
+		return nil, ErrInvalidKey
+	}
+
+	shared, err := curve25519.X25519(k.Private[:], other.Public[:])
+	if err != nil {
+		return nil, err
+	}
+
+	return shared, nil
 }
