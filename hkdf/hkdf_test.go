@@ -21,13 +21,13 @@ func TestHKDF(t *testing.T) {
 	}
 
 	// Alice -> Bob
-	aliceShared, err := alice.Exchange(bob)
+	aliceShared, err := alice.Exchange(bob.Public)
 	if err != nil {
 		t.Error(err)
 	}
 
 	// Bob -> Alice
-	bobShared, err := bob.Exchange(alice)
+	bobShared, err := bob.Exchange(alice.Public)
 	if err != nil {
 		t.Error(err)
 	}

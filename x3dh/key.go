@@ -27,12 +27,12 @@ func GenerateKey() (*Key, error) {
 	return &k, nil
 }
 
-func (k *Key) Exchange(other *Key) ([]byte, error) {
-	if other == nil || k == nil {
+func (k *Key) Exchange(other [32]byte) ([]byte, error) {
+	if k == nil {
 		return nil, ErrInvalidKey
 	}
 
-	shared, err := curve25519.X25519(k.Private[:], other.Public[:])
+	shared, err := curve25519.X25519(k.Private[:], other[:])
 	if err != nil {
 		return nil, err
 	}

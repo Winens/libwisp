@@ -22,8 +22,8 @@ func HKDF(keys ...[]byte) ([]byte, error) {
 		combined = append(combined, keys[index]...)
 	}
 
-	hash := make([]byte, 32*len(keys))
-	hashReader := hkdf.New(sha3.New512, combined, nil, nil)
+	hash := make([]byte, 32)
+	hashReader := hkdf.New(sha3.New256, combined, nil, nil)
 	if _, err := io.ReadFull(hashReader, hash); err != nil {
 		return nil, ErrKeyDerivation
 	}
